@@ -1,0 +1,38 @@
+[package]
+name = "proc_static_assertions"
+version = "0.0.0"
+edition = "2021"
+authors = ["Anton Melnychuk", "Ramla Ijaz"]
+license = "MIT OR Apache-2.0"
+readme = "../README.md"
+homepage = "https://github.com/anton-mel/proc-assertions"
+repository = "https://github.com/anton-mel/proc-assertions"
+documentation = "https://docs.rs/proc_static_assertions/"
+categories = ["no-std", "rust-patterns", "development-tools::testing"]
+keywords = ["assert", "static", "testing"]
+description = "Compile-time assertions via procedural macros."
+include = ["Cargo.toml", "src/**/*.rs", "README.md", "CHANGELOG.md", "LICENSE*"]
+
+[lib]
+proc-macro = true
+
+[badges]
+travis-ci = { repository = "anton-mel/proc-assertions" }
+is-it-maintained-open-issues = { repository = "anton-mel/proc-assertions" }
+is-it-maintained-issue-resolution = { repository = "anton-mel/proc-assertions" }
+maintenance = { status = "passively-maintained" }
+
+[features]
+nightly = []
+proc_static_assertions = []
+
+
+# proc_macro2: This is a separate to compiler based proc_macro crate that provides a more 
+# flexible and ergonomic API for working with Rust's procedural macros. It's designed to 
+# facilitate manipulation of Rust syntax trees (AST) and token streams.
+
+[dependencies]
+syn = { version = "2.0.68", features = ["full", "visit-mut"] }
+proc-macro2 = "1.0.86"
+quote = "1.0.36"
+
