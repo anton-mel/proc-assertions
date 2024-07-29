@@ -42,4 +42,4 @@ This crate exposes the following proc-macros:
 
 ## License
 
-This project is licensed under the [MIT License.](https://github.com/anton-mel/proc-assertions/LICENSE-MIT)
+This project is licensed under the [MIT License](https://github.com/anton-mel/proc-assertions/LICENSE-MIT).
