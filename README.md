@@ -1,7 +1,7 @@
 # proc-assertions
 
 Verify your code via procedural assumptions in Rust developed by [Efficient Computing Lab](https://www.yecl.org/). 
-Find previous commits [here](https://github.com/Ramla-I/static-assertions/tree/antonmel).
+Find previous commits for the crate 1.1.0 version [here](https://github.com/Ramla-I/static-assertions/tree/antonmel).
 
 ## Installation
 
