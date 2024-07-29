@@ -1,6 +1,7 @@
 # proc-assertions
 
-Verify your code via procedural assumptions in Rust developed by [Efficient Computing Lab](https://www.yecl.org/).
+Verify your code via procedural assumptions in Rust developed by [Efficient Computing Lab](https://www.yecl.org/). 
+Find previous commits [here](https://github.com/Ramla-I/static-assertions/tree/antonmel).
 
 ## Installation
 
@@ -30,5 +31,15 @@ This crate exposes the following proc-macros:
 - #[`notmutates`]
 - #[`private_fields`]
 - #[`size_align`]
-- #[`consumes!`]
+- #[`consumes`]
 
+## FAQ
+
+- **Q:** When would I want to use this?
+- **Q:** How can I contribute?
+- **Q:** Will this affect my compiled binary?
+- **Q:** Will this affect my compile times?
+
+## License
+
+This project is licensed under the [MIT License.](https://github.com/anton-mel/proc-assertions/LICENSE-MIT)
