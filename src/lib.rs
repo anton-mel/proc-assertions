@@ -93,14 +93,16 @@ extern crate syn;
 // Here we build out custom parse_macro_input! implementation.
 // https://docs.rs/syn/latest/syn/meta/fn.parser.html#example
 mod parser;
+mod macros;
+
 use parser::whitelist;
 use parser::field_whitelist;
 
-mod private_fields;
-mod size_align;
-mod consumes;
-mod mutates;
-mod calls;
+use macros::private_fields;
+use macros::size_align;
+use macros::consumes;
+use macros::mutates;
+use macros::calls;
 
 // Function-like macros in Rust take only one TokenStream parameter and return a TokenStream.
 // https://doc.rust-lang.org/book/ch19-06-macros.html#how-to-write-a-custom-derive-macro

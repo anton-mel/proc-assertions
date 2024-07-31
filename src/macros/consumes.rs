@@ -44,9 +44,9 @@ pub fn assert_function_consumes_impl(whitelist: &[String], function: ItemFn) -> 
 }
 
 fn clean_type_string(type_str: &str) -> String {
-    type_str.replace(" ", "") // Remove any spaces
-            .replace("\n", "") // Remove new lines
-            .replace("\t", "") // Remove tabs
+    type_str.replace(" ", "")
+            .replace("\n", "")
+            .replace("\t", "")
 }
 
 fn is_type_compatible(arg_type_str: &str, whitelist_type: &str) -> bool {
