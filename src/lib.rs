@@ -98,9 +98,6 @@ use parser::field_whitelist;
 
 mod private_fields;
 mod size_align;
-mod mutatedby;
-
-mod calledby; // to be removed
 mod consumes;
 mod mutates;
 mod calls;
@@ -111,7 +108,7 @@ use proc_macro::TokenStream;
 
 use syn::{
     parse_macro_input, DeriveInput, 
-    ItemStruct, ItemImpl, ItemFn};
+    ItemStruct, ItemFn};
 
     
 /// A procedural macro to assert that all fields in a struct are private.
