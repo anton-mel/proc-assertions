@@ -26,9 +26,9 @@ extern crate proc_static_assertions;
 
 This crate exposes the following proc-macros:
 - #[`calls`]
-- #[`notcalls`]
+- #[`nocalls`]
 - #[`mutates`]
-- #[`notmutates`]
+- #[`nomutates`]
 - #[`private_fields`]
 - #[`size_align`]
 - #[`consumes`]
