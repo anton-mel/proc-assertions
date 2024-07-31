@@ -145,59 +145,6 @@ pub fn assert_function_consumes(attr: TokenStream, item: TokenStream) -> TokenSt
 }
 
 
-// Going direct way to protect the function usage is hard, since we 
-// don't know where the call is completed outside the whitelist-macro, so we go 
-// the other way by generating a check-function __callsite or __mutates awaiting 
-// for the function name as an arguemnt. This function is injected in the 
-// crate at compile time, so that developer can manually make a check-call via
-// Origin::__callsite/__mutates("function_name").
-
-/// A procedural macro attribute to hold the whitelist of functions.
-/// Checks if a field of a type is only mutated in certain functions.
-#[proc_macro_attribute]
-pub fn mutatedby(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(item as ItemImpl);
-    let fns = parse_macro_input!(attr as whitelist::WhitelistArgs);
-
-    mutatedby::assert_mutatedby_impl(&fns.values, input).into()
-}
-
-/// This macro is to further simplify the process of verification by 
-/// automatically generating __mutates() calls when needed.
-#[proc_macro_attribute]
-pub fn assert_mutates(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(item as ItemFn);
-    let expanded = mutatedby::assert_mutates_impl(input);
-    TokenStream::from(expanded)
-}
-
-
-/// A function is only called in certain functions.
-#[proc_macro_attribute]
-pub fn calledby(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(item as ItemFn);
-    let fns = parse_macro_input!(attr as whitelist::WhitelistArgs);
-
-    calledby::assert_calledby_impl(&fns.values, input).into()
-}
-
-/// This macro is to further simplify the process of verification by 
-/// automatically generating __callsite() calls when needed.
-#[proc_macro_attribute]
-pub fn assert_callsite(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(item as ItemFn);
-    let expanded = calledby::assert_callsite_impl(input);
-    TokenStream::from(expanded)
-}
-
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-
-
 /// Checks if a function includes all the whitelisted method calls.
 /// This macro ensures that only the methods listed in the whitelist are called within the function.
 /// If any method call outside of the whitelist is found, a compile-time error will be generated.
