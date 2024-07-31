@@ -190,10 +190,19 @@ pub fn assert_callsite(_attr: TokenStream, item: TokenStream) -> TokenStream {
     TokenStream::from(expanded)
 }
 
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
-// This are new correct implementations. 
 
-/// A function is only called in certain functions.
+/// Checks if a function includes all the whitelisted method calls.
+/// This macro ensures that only the methods listed in the whitelist are called within the function.
+/// If any method call outside of the whitelist is found, a compile-time error will be generated.
+/// 
+/// Usage: #[calls("func1", "func2", "func3"...)]
 #[proc_macro_attribute]
 pub fn calls(attr: TokenStream, item: TokenStream) -> TokenStream {
     let whitelist = parse_macro_input!(attr as whitelist::WhitelistArgs);
@@ -202,7 +211,11 @@ pub fn calls(attr: TokenStream, item: TokenStream) -> TokenStream {
     calls::assert_call_impl(&whitelist.values, &input, false).into()
 }
 
-/// A function is restricted to be called only in certain functions.
+/// Checks if a function excludes all whitelisted method calls.
+/// This macro ensures that none of the methods listed in the whitelist are called within the function.
+/// If any whitelisted method call is found, a compile-time error will be generated.
+///
+/// Usage: `#[nocalls("func1", "func2", "func3", ...)]`
 #[proc_macro_attribute]
 pub fn nocalls(attr: TokenStream, item: TokenStream) -> TokenStream {
     let whitelist = parse_macro_input!(attr as whitelist::WhitelistArgs);
@@ -211,11 +224,28 @@ pub fn nocalls(attr: TokenStream, item: TokenStream) -> TokenStream {
     calls::assert_call_impl(&whitelist.values, &input, true).into()
 }
 
-/// Checks if a field of a type is only mutated in certain functions.
+/// Checks if only whitelisted fields of an instance type are mutated by a function.
+/// This macro enforces that only the fields listed in the whitelist can be mutated by the function.
+/// If any field not in the whitelist is mutated, a compile-time error will be generated.
+///
+/// Usage: `#[mutates(MyStructName: "field1", "field2", "field3", ...)]`
 #[proc_macro_attribute]
 pub fn mutates(attr: TokenStream, item: TokenStream) -> TokenStream {
     let macro_data = parse_macro_input!(attr as field_whitelist::WhitelistArgs);
     let input = parse_macro_input!(item as ItemFn);
     
-    mutates::assert_mutate_impl(&macro_data, &input).into()
+    mutates::assert_mutate_impl(&macro_data, &input, false).into()
+}
+
+#[proc_macro_attribute]
+/// Checks if a public field of an instance type is only mutated by specific whitelisted functions.
+/// This macro ensures that only the functions listed in the whitelist can mutate public fields of the instance type.
+/// If any public field is mutated by a function not in the whitelist, a compile-time error will be generated.
+///
+/// Usage: `#[nomutates(MyStructName: "func1", "func2", "func3", ...)]`
+pub fn nomutates(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let macro_data = parse_macro_input!(attr as field_whitelist::WhitelistArgs);
+    let input = parse_macro_input!(item as ItemFn);
+    
+    mutates::assert_mutate_impl(&macro_data, &input, true).into()
 }

@@ -33,9 +33,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_allowed_mutate() {
+    #[mutates(MyStruct: ("field"))]
+    fn test_allowed_mutate_inner() {
         let mut instance = MyStruct::default();
-        instance.allowed_mutate();
+        instance.field = 1;
+        assert_eq!(instance.field, 1);
+    }
+
+    #[test]
+    fn test_allowed_mutate_args() {
+        let mut instance = MyStruct::default();
+        test_allowed_mutate_args_impl(&mut instance);
+    }
+
+    #[mutates(MyStruct: ("field"))]
+    fn test_allowed_mutate_args_impl(instance: &mut MyStruct) {
+        instance.field += 1;
         assert_eq!(instance.field, 1);
     }
 }

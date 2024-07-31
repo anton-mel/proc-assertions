@@ -1,5 +1,5 @@
 use syn::{
-    Block, Local, ExprField, ExprClosure, ExprBlock,
+    Block, Local, ExprField, ExprClosure, ExprBlock, TypeReference,
     FnArg, ExprPath, ExprIf, ExprWhile, ExprForLoop,
     punctuated::Punctuated, token::Comma, Expr, Member,
     ItemFn, Pat, Type, Stmt, TypePath, ExprCall, PatIdent};
@@ -9,7 +9,7 @@ use std::collections::HashSet;
 use quote::quote;
 
 
-pub fn assert_mutate_impl(macro_data: &WhitelistArgs, function: &ItemFn) -> ProcTokenStream {
+pub fn assert_mutate_impl(macro_data: &WhitelistArgs, function: &ItemFn, restricted_mode: bool) -> ProcTokenStream {
     // NOTE: For better code layout, we will require separate proc-macro for each field
     // to be whitelisted type of #[struct_name: (field1, field2, field3, ...)].
     
@@ -33,7 +33,8 @@ pub fn assert_mutate_impl(macro_data: &WhitelistArgs, function: &ItemFn) -> Proc
         whitelist,
         &mut found_instances, 
         struct_name, 
-        &mut errors);
+        &mut errors,
+        restricted_mode);
 
 
     if !errors.is_empty() {
@@ -65,26 +66,41 @@ fn extract_instance_names(
             FnArg::Typed(pat_type) => {
                 let pat = &*pat_type.pat;
                 let ty = &*pat_type.ty;
+                let ty_str = quote! { #ty }.to_string();
+                println!("Type: {}", ty_str);
 
                 match pat {
                     Pat::Ident(pat_ident) => {
-                        // println!("Argument pattern: {:?}", pat_ident.ident);
-                        if let Type::Path(TypePath { path, .. }) = ty {
+                        if let Type::Reference(TypeReference { elem, .. }) = ty {
+                            // Handle type reference by dereferencing.
+                            if let Type::Path(TypePath { path, .. }) = &**elem {
+                                // let path_str = quote! { #path }.to_string();
+                                if path.is_ident(struct_name) {
+                                    // println!("Added type path (dereferenced): {}", path_str);
+                                    found_instances.insert(pat_ident.ident.to_string());
+                                }
+                            }
+                        } else if let Type::Path(TypePath { path, .. }) = ty {
+                            // let path_str = quote! { #path }.to_string();
                             if path.is_ident(struct_name) {
+                                // println!("Added type path: {}", path_str);
                                 found_instances.insert(pat_ident.ident.to_string());
                             }
+                        } else {
+                            panic!("Found unexpected argument type: {}. We apologize for the inconvenience.
+                            Please report this issue on GitHub, and we will address it promptly.", ty_str);
                         }
                     }
                     _ => {
-                        // Raise a compile-time error if a non-identifier pattern is found, since we cannot parse it.
-                        panic!("This macro requires all function arguments to be explicitly typed. \n
-                        \t Non-typed argument detected: {:?}", quote! { #pat }.to_string());
+                        let pat_str = quote! { #pat }.to_string();
+                        panic!("Found unexpected pattern: {}. We apologize for the inconvenience. 
+                        Please report this issue on GitHub, and we will address it promptly.", pat_str);
                     }
                 }
             }
 
             FnArg::Receiver(receiver) => {
-                // Handle the case where the argument is `self` for methods.
+                // Handle the case where the argument is `self` for methods
                 if receiver.reference.is_some() || receiver.mutability.is_some() {
                     found_instances.insert("self".to_string());
                 }
@@ -92,6 +108,7 @@ fn extract_instance_names(
         }
     }
 }
+
 
 /// Extracts all inner instance names from the function 
 /// body if matches the specified struct_name on Expr::CAll.
@@ -140,11 +157,21 @@ fn check_whitelist(
     field_ident_str: &String, 
     whitelist: &[String], 
     errors: &mut Vec<Error>, 
-    message: &str
+    message: &str, 
+    mode: bool,
 ) {
-    if !whitelist.contains(field_ident_str) {
-        // Custom assetion based on whitelist data and found AST calls.
-        errors.push(Error::new(format!("{}: `{}`", message, field_ident_str)));
+    let is_whitelisted = whitelist.contains(field_ident_str);
+
+    if mode {
+        if is_whitelisted {
+            // Custom assetion based on whitelist data and found AST calls.
+            errors.push(Error::new(format!("{} is resticted by the whitelist`", message)));
+        }
+    } else {
+        if !is_whitelisted {
+            // Custom assetion based on whitelist data and found AST calls.
+            errors.push(Error::new(format!("{} is not whitelisted`", message)));
+        }
     }
 }
 
@@ -166,13 +193,14 @@ fn check_block_for_mutation(
     found_instances: &mut HashSet<String>,
     struct_name: &str,
     errors: &mut Vec<Error>,
+    mode: bool,
 ) {
     for stmt in &block.stmts {
         match stmt {
             Stmt::Expr(expr, _) => {
                 // print_ast(expr, "Found Expression");
                 // Explore Netsted Expression for struct field mutation.
-                check_expr_for_mutation(expr, whitelist, errors, found_instances, struct_name);
+                check_expr_for_mutation(expr, whitelist, errors, found_instances, struct_name, mode);
             }
             Stmt::Local(Local { pat, init, .. }) => {
                 if let Some(init) = init {
@@ -180,7 +208,7 @@ fn check_block_for_mutation(
                     // Extract instance name if initialization expression is a struct creation.
                     extract_inner_instance(pat, &init.expr, found_instances, struct_name);
                     // Check the initialization expression for instance names and mutation.
-                    check_expr_for_mutation(&init.expr, whitelist, errors, found_instances, struct_name);
+                    check_expr_for_mutation(&init.expr, whitelist, errors, found_instances, struct_name, mode);
                 }
             }
             _ => {}
@@ -195,6 +223,7 @@ fn check_expr_for_mutation(
     errors: &mut Vec<Error>,
     found_instances: &mut HashSet<String>,
     struct_name: &str,
+    mode: bool,
 ) {
     match expr {
         Expr::Binary(binary_expr) => {
@@ -211,7 +240,8 @@ fn check_expr_for_mutation(
                                     &field_ident_str,
                                     whitelist,
                                     errors,
-                                    &format!("Mutation to field `{}` is not whitelisted", field_ident_str)
+                                    &format!("Mutation to field `{}::{}`", struct_name, field_ident_str),
+                                    mode
                                 );
                             }
                         }
@@ -233,7 +263,8 @@ fn check_expr_for_mutation(
                                     &field_ident_str,
                                     whitelist,
                                     errors,
-                                    &format!("Mutation to field `{}` is not whitelisted", field_ident_str)
+                                    &format!("Mutation to field `{}::{}`", struct_name, field_ident_str),
+                                    mode
                                 );
                             }
                         }
@@ -244,21 +275,21 @@ fn check_expr_for_mutation(
 
         Expr::Block(ExprBlock { block, .. }) => {
             // Handle a block of code: `{ ... }`.
-            check_block_for_mutation(&block, whitelist, found_instances, struct_name, errors);
+            check_block_for_mutation(&block, whitelist, found_instances, struct_name, errors, mode);
         }
 
         Expr::If(ExprIf { then_branch, else_branch, .. }) => {
             // Process the `then` block.
-            check_block_for_mutation(&then_branch, whitelist, found_instances, struct_name, errors);
+            check_block_for_mutation(&then_branch, whitelist, found_instances, struct_name, errors, mode);
             // Process the `else` branch if present.
             if let Some((_, else_expr)) = else_branch {
                 match &**else_expr {
                     Expr::Block(ExprBlock { block, .. }) => {
                         // Process the block inside `else_expr`
-                        check_block_for_mutation(&block, whitelist, found_instances, struct_name, errors);
+                        check_block_for_mutation(&block, whitelist, found_instances, struct_name, errors, mode);
                     },
                     // Handle other types of `else_expr` if necessary
-                    _ => check_expr_for_mutation(expr, whitelist, errors, found_instances, struct_name),
+                    _ => check_expr_for_mutation(expr, whitelist, errors, found_instances, struct_name, mode),
                 }
             }
         }
@@ -270,20 +301,21 @@ fn check_expr_for_mutation(
                 whitelist, 
                 found_instances, 
                 struct_name,
-                errors);
+                errors,
+                mode);
         }
 
         Expr::ForLoop(ExprForLoop { body, .. }) => {
             // Handle the expression inside the for loop (always block).
-            check_block_for_mutation(&body, whitelist, found_instances, struct_name, errors);
+            check_block_for_mutation(&body, whitelist, found_instances, struct_name, errors, mode);
         }
 
         Expr::Closure(ExprClosure { body, .. }) => {
             // Handle closures (either block or expression).
             if let Expr::Block(ExprBlock { block, .. }) = &**body {
-                check_block_for_mutation(block, whitelist, found_instances, struct_name, errors);
+                check_block_for_mutation(block, whitelist, found_instances, struct_name, errors, mode);
             } else {
-                check_expr_for_mutation(body, whitelist, errors, found_instances, struct_name);
+                check_expr_for_mutation(body, whitelist, errors, found_instances, struct_name, mode);
             }
         }
 

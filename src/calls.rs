@@ -14,7 +14,7 @@ pub fn assert_call_impl(whitelist: &[String], function: &ItemFn, restricted_mode
     check_block_for_calls(block, whitelist, &mut errors, restricted_mode);
 
     if !errors.is_empty() {
-        let mut error_message = String::from("Function contains calls restricted by the whitelist macro:\n");
+        let mut error_message = String::from("Function contains macro-restricted calls:\n");
         
         for error in &errors {
             error_message.push_str(&format!(" - {}\n", error.message));
@@ -51,13 +51,11 @@ fn check_whitelist(
 
     if mode {
         if is_whitelisted {
-            // When mode is true, error if the name is found in the whitelist.
-            errors.push(Error::new(format!("{}: `{}` is whitelisted but should not be.", message, name)));
+            errors.push(Error::new(format!("{}`{}` resticted by `nomutates` macro", message, name)));
         }
     } else {
         if !is_whitelisted {
-            // When mode is false, error if the name is not found in the whitelist.
-            errors.push(Error::new(format!("{}: `{}` is not whitelisted.", message, name)));
+            errors.push(Error::new(format!("{}`{}` not whitelisted by `mutates` macro", message, name)));
         }
     }
 }
@@ -114,7 +112,7 @@ fn check_expr_for_calls(expr: &Expr, whitelist: &[String], errors: &mut Vec<Erro
                         &func_name, 
                         whitelist, 
                         errors, 
-                        "Function calls a non-whitelisted function",
+                        "Function calls ",
                         mode,
                     );
                 }
@@ -129,7 +127,7 @@ fn check_expr_for_calls(expr: &Expr, whitelist: &[String], errors: &mut Vec<Erro
                 &method_name, 
                 whitelist, 
                 errors, 
-                "Method call to a non-whitelisted method",
+                "Method calls ",
                 mode,
             );
         }
