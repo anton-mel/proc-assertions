@@ -115,7 +115,7 @@ use syn::{
     
 /// A procedural macro to assert that all fields in a struct are private.
 #[proc_macro_attribute]
-pub fn assert_private_fields(attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn private_fields(attr: TokenStream, item: TokenStream) -> TokenStream {
     let input = parse_macro_input!(item as ItemStruct);
     let fields = parse_macro_input!(attr as whitelist::WhitelistArgs);
 
@@ -136,7 +136,7 @@ pub fn assert_align_size(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// A function consumes a list of instances of certain types. Allows to 
 /// quickly assert function argument types where Rustc cannot access.
 #[proc_macro_attribute]
-pub fn assert_function_consumes(attr: TokenStream, item: TokenStream) -> TokenStream {
+pub fn consumes(attr: TokenStream, item: TokenStream) -> TokenStream {
     let types = parse_macro_input!(attr as whitelist::WhitelistArgs);
     let input = parse_macro_input!(item as ItemFn);
 

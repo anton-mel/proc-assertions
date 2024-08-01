@@ -51,11 +51,11 @@ fn check_whitelist(
 
     if mode {
         if is_whitelisted {
-            errors.push(Error::new(format!("{}`{}` resticted by `nomutates` macro", message, name)));
+            errors.push(Error::new(format!("{}`{}` resticted by `nocalls` macro", message, name)));
         }
     } else {
         if !is_whitelisted {
-            errors.push(Error::new(format!("{}`{}` not whitelisted by `mutates` macro", message, name)));
+            errors.push(Error::new(format!("{}`{}` not whitelisted by `calls` macro", message, name)));
         }
     }
 }
