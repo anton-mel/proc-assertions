@@ -1,6 +1,6 @@
+use syn::{Fields, ItemStruct, Visibility};
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{Fields, ItemStruct, Visibility};
 
 pub fn assert_private_fields_impl(whitelist: &[String], input: ItemStruct) -> TokenStream {
     let struct_name = &input.ident;

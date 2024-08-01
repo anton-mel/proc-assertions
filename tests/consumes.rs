@@ -27,10 +27,24 @@ mod simple_tests {
     // This should generate a compile time error because the main purpose of this macro is to check
     // that a type is "consumed", meaning ownership is passed to the called function, not just that it's
     // in the argument list
+    // #[test]
+    // fn test_consumes_list_should_fail() {
+    //     #[allow(dead_code)]
+    //     #[consumes("u8", "& mut ConsumedStruct")]
+    //     fn test_function(_arg1: i32, _arg2: u8, _arg3: &mut ConsumedStruct) {}
+    // }
+
     #[test]
-    fn test_consumes_list_should_fail() {
+    fn test_consumes_list_reference() {
         #[allow(dead_code)]
-        #[consumes("u8", "ConsumedStruct")]
+        #[consumes("u8", "& ConsumedStruct")]
+        fn test_function(_arg1: i32, _arg2: u8, _arg3: & ConsumedStruct) {}
+    }
+
+    #[test]
+    fn test_consumes_list_mutable() {
+        #[allow(dead_code)]
+        #[consumes("u8", "& mut ConsumedStruct")]
         fn test_function(_arg1: i32, _arg2: u8, _arg3: &mut ConsumedStruct) {}
     }
 }

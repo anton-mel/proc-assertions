@@ -1,20 +1,21 @@
 use proc_macro::TokenStream;
-use syn::{Error, FnArg, ItemFn};
+use syn::{FnArg, ItemFn};
 use quote::quote;
 
 pub fn assert_function_consumes_impl(whitelist: &[String], function: ItemFn) -> TokenStream {
     let mut errors = Vec::new();
 
+    // Iterate over each type in the whitelist.
     for w in whitelist {
-        // Check if any argument type matches the current whitelist type.
         let mut found_match = false;
+
         for input_arg in &function.sig.inputs {
             if let FnArg::Typed(arg) = input_arg {
                 let arg_type = &arg.ty;
                 let arg_type_str = quote! { #arg_type }.to_string();
-                let cleaned_type_str = clean_type_string(&arg_type_str);
 
-                if is_type_compatible(&cleaned_type_str, w) {
+                // Check if the whitelist type matches the type string.
+                if is_type_compatible(&arg_type_str, w) {
                     found_match = true;
                     break;
                 }
@@ -22,18 +23,16 @@ pub fn assert_function_consumes_impl(whitelist: &[String], function: ItemFn) -> 
         }
 
         if !found_match {
-            errors.push(Error::new(
+            errors.push(syn::Error::new(
                 function.sig.ident.span(),
-                format!("Compilation error: `{}` type is not consumed by the `{}` function", w, function.sig.ident),
+                format!("Consumes-macro error: `{}` type is not consumed by the `{}` function", w, function.sig.ident),
             ));
         }
     }
 
     if !errors.is_empty() {
-        let mut error_message = String::from("Function argument types do not match the whitelist:\n");
-        for error in &errors {
-            error_message.push_str(&format!(" - {}\n", error));
-        }
+        let error_messages: Vec<String> = errors.into_iter().map(|e| e.to_string()).collect();
+        let error_message = error_messages.join("\n");
 
         return TokenStream::from(quote! {
             compile_error!(#error_message);
@@ -43,12 +42,8 @@ pub fn assert_function_consumes_impl(whitelist: &[String], function: ItemFn) -> 
     TokenStream::from(quote! { #function })
 }
 
-fn clean_type_string(type_str: &str) -> String {
-    type_str.replace(" ", "")
-            .replace("\n", "")
-            .replace("\t", "")
-}
-
 fn is_type_compatible(arg_type_str: &str, whitelist_type: &str) -> bool {
-    arg_type_str.contains(whitelist_type)
+    // println!("Comparing argument type `{}` with whitelist type `{}`", arg_type_str, whitelist_type);
+    // Basic match improvement: trim and compare exact strings
+    arg_type_str.trim() == whitelist_type
 }
