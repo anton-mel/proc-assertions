@@ -11,16 +11,26 @@ mod simple_tests {
     #[test]
     fn test_consumes_list() {
         #[allow(dead_code)]
-        #[assert_function_consumes("u8", "ConsumedStruct")]
+        #[consumes("u8", "ConsumedStruct")]
         fn test_function(_arg1: i32, _arg2: u8, _arg3: ConsumedStruct) {}
         // The only type of argument that proc-macros can accept are &str
     }
 
     // Should generate a compile time error
     // #[test]
-    // fn test_consumes_list() {
+    // fn test_consumes_list_fails() {
     //     #[allow(dead_code)]
-    //     #[assert_function_consumes("u8", "ConsumedStruct2")]
+    //     #[consumes("u8", "ConsumedStruct2")]
     //     fn test_function(_arg1: i32, _arg2: u8, _arg3: ConsumedStruct) {}
     // }
+
+    // This should generate a compile time error because the main purpose of this macro is to check
+    // that a type is "consumed", meaning ownership is passed to the called function, not just that it's
+    // in the argument list
+    #[test]
+    fn test_consumes_list_should_fail() {
+        #[allow(dead_code)]
+        #[consumes("u8", "ConsumedStruct")]
+        fn test_function(_arg1: i32, _arg2: u8, _arg3: &mut ConsumedStruct) {}
+    }
 }
