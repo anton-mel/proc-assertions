@@ -32,7 +32,7 @@ proc_static_assertions = []
 # facilitate manipulation of Rust syntax trees (AST) and token streams.
 
 [dependencies]
-syn = { version = "2.0.68", features = ["full", "visit-mut"] }
+syn = { version = "2.0", features = ["full", "visit-mut"] }
 proc-macro2 = "1.0"
 quote = "1.0"
 
