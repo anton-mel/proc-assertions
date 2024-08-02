@@ -34,5 +34,5 @@ proc_static_assertions = []
 [dependencies]
 syn = { version = "2.0.68", features = ["full", "visit-mut"] }
 proc-macro2 = "1.0"
-quote = "1.0.36"
+quote = "1.0"
 
