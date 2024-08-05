@@ -154,20 +154,7 @@ pub fn calls(attr: TokenStream, item: TokenStream) -> TokenStream {
     let whitelist = parse_macro_input!(attr as whitelist::WhitelistArgs);
     let input = parse_macro_input!(item as ItemFn);
     
-    calls::assert_call_impl(&whitelist.values, &input, false).into()
-}
-
-/// Checks if a function excludes all whitelisted method calls.
-/// This macro ensures that none of the methods listed in the whitelist are called within the function.
-/// If any whitelisted method call is found, a compile-time error will be generated.
-///
-/// Usage: `#[nocalls("func1", "func2", "func3", ...)]`
-#[proc_macro_attribute]
-pub fn nocalls(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let whitelist = parse_macro_input!(attr as whitelist::WhitelistArgs);
-    let input = parse_macro_input!(item as ItemFn);
-    
-    calls::assert_call_impl(&whitelist.values, &input, true).into()
+    calls::assert_call_impl(&whitelist.values, &input).into()
 }
 
 /// Checks if only whitelisted fields of an instance type are mutated by a function.

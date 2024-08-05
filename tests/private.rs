@@ -17,9 +17,8 @@ mod simple_tests {
 
 // Uncommenting the following code should 
 // trigger a compile-time error
-// Are you sure? no compile-time error for me
-#[private_fields]
-struct InvalidStruct {
-    pub field1: i32,
-    field2: String,
-}
+// #[private_fields("field1")]
+// struct InvalidStruct {
+//     pub field1: i32,
+//     field2: String,
+// }

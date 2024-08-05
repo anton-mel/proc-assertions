@@ -6,6 +6,7 @@ extern crate proc_static_assertions;
 
 pub fn allowed_function() {}
 pub fn disallowed_function() {}
+pub fn allowed_function_not_checked() {}
 
 pub struct MyStruct;
 
@@ -41,6 +42,8 @@ mod simple_tests {
         #[calls("allowed_function")]
         pub fn my_function() {
             allowed_function();
+            // although not listed, error is not raised
+            allowed_function_not_checked();
         }
     }
 
