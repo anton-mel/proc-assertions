@@ -38,7 +38,10 @@ mod simple_tests {
     fn test_consumes_list_reference() {
         #[allow(dead_code)]
         #[consumes("u8", "& ConsumedStruct")]
-        fn test_function(_arg1: i32, _arg2: u8, _arg3: & ConsumedStruct) {}
+        fn test_function(_arg1: i32, _arg2: u8, _arg3: & ConsumedStruct) -> i32 { 5 }
+
+        let a = ConsumedStruct;
+        assert_eq!(test_function(0,0, &a), 5);
     }
 
     #[test]
