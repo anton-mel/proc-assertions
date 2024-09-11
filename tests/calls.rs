@@ -73,23 +73,21 @@ mod nested_tests {
         // restrict the usage to certain functions.
         
         #[allow(dead_code)]
-        #[calls("allowed_function", "name")]
+        #[calls("allowed_function", "disallowed_function", "name")]
         pub fn my_function() {
             let name = || {
                 while false {
                     for _ in 0..5 {
-                        // ``` fails // ISSUE! update tests because now others can be called
-                        disallowed_function();
+                        // ``` fails if commented out
                         allowed_function();
                     }
                 }
 
-                // ``` fails
+                // `` fails if commented out
                 let _i = { disallowed_function(); };
             };
 
             name();
-            allowed_function();
         }
     }
 }

@@ -1,4 +1,5 @@
 #![no_std]
+#![allow(dead_code)]
 #![deny(unsafe_code)]
 
 #[macro_use]
@@ -13,8 +14,7 @@ mod simple_tests {
             pub field2: u32,
         }
 
-        // ISSUE! After the proc macro application, the struct cannot be found
-        // let a = TestStruct{ field1: 0, field2: 0};
+        let _a = TestStruct{ field1: 0, field2: 0};
     }
 }
 

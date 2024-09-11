@@ -25,7 +25,7 @@ pub fn assert_call_impl(whitelist: &[String], function: &ItemFn) -> ProcTokenStr
     }
 
     if !errors.is_empty() {
-        let mut error_message = String::from("Function contains macro-restricted calls:\n");
+        let mut error_message = String::from("Function missing required calls:\n");
         
         for error in &errors {
             error_message.push_str(&format!(" - {}\n", error.message));
@@ -57,9 +57,7 @@ fn check_whitelist(
     _errors: &mut Vec<Error>, 
     called_functions: &mut HashSet<String>
 ) {
-    let is_whitelisted = whitelist.contains(&name.to_string());
-
-    if is_whitelisted {
+    if whitelist.contains(&name.to_string()) {
         called_functions.insert(name.to_string());
     }
 }
