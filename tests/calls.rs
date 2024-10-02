@@ -25,6 +25,12 @@ impl MyStruct {
         self.target_function2();
     }
 
+    #[calls("allowed_caller", "allowed_caller_multiple")]
+    pub fn allowed_caller_multiple_methods(&self) {
+        self.allowed_caller();
+        self.allowed_caller_multiple();
+    }
+
     // ``` fails
     // #[calls("allowed_function", "target_function2")]
     // pub fn unauthorized_caller(&self) {
@@ -67,23 +73,21 @@ mod nested_tests {
         // restrict the usage to certain functions.
         
         #[allow(dead_code)]
-        #[calls("allowed_function", "name")]
+        #[calls("allowed_function", "disallowed_function", "name")]
         pub fn my_function() {
             let name = || {
                 while false {
                     for _ in 0..5 {
-                        // ``` fails
-                        // disallowed_function();
+                        // ``` fails if commented out
                         allowed_function();
                     }
                 }
 
-                // ``` fails
-                // let _i = { disallowed_function(); };
+                // `` fails if commented out
+                let _i = { disallowed_function(); };
             };
 
             name();
-            allowed_function();
         }
     }
 }

@@ -1,4 +1,5 @@
 #![no_std]
+#![allow(dead_code)]
 #![deny(unsafe_code)]
 
 #[macro_use]
@@ -10,8 +11,10 @@ mod simple_tests {
         #[private_fields("field1")]
         struct TestStruct {
             field1: i32,
-            pub field2: String,
+            pub field2: u32,
         }
+
+        let _a = TestStruct{ field1: 0, field2: 0};
     }
 }
 
