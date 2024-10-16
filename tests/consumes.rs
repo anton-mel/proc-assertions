@@ -13,35 +13,16 @@ mod simple_tests {
         #[allow(dead_code)]
         #[consumes("u8", "ConsumedStruct")]
         fn test_function(_arg1: i32, _arg2: u8, _arg3: ConsumedStruct) {}
-        // The only type of argument that proc-macros can accept are &str
     }
-
-    // Should generate a compile time error
-    // #[test]
-    // fn test_consumes_list_fails() {
-    //     #[allow(dead_code)]
-    //     #[consumes("u8", "ConsumedStruct2")]
-    //     fn test_function(_arg1: i32, _arg2: u8, _arg3: ConsumedStruct) {}
-    // }
-
-    // This should generate a compile time error because the main purpose of this macro is to check
-    // that a type is "consumed", meaning ownership is passed to the called function, not just that it's
-    // in the argument list
-    // #[test]
-    // fn test_consumes_list_should_fail() {
-    //     #[allow(dead_code)]
-    //     #[consumes("u8", "& mut ConsumedStruct")]
-    //     fn test_function(_arg1: i32, _arg2: u8, _arg3: &mut ConsumedStruct) {}
-    // }
 
     #[test]
     fn test_consumes_list_reference() {
         #[allow(dead_code)]
         #[consumes("u8", "& ConsumedStruct")]
-        fn test_function(_arg1: i32, _arg2: u8, _arg3: & ConsumedStruct) -> i32 { 5 }
+        fn test_function(_arg1: i32, _arg2: u8, _arg3: &ConsumedStruct) -> i32 { 5 }
 
         let a = ConsumedStruct;
-        assert_eq!(test_function(0,0, &a), 5);
+        assert_eq!(test_function(0, 0, &a), 5);
     }
 
     #[test]
@@ -49,5 +30,27 @@ mod simple_tests {
         #[allow(dead_code)]
         #[consumes("u8", "& mut ConsumedStruct")]
         fn test_function(_arg1: i32, _arg2: u8, _arg3: &mut ConsumedStruct) {}
+    }
+}
+
+// Define a separate struct for testing self-consuming methods
+pub struct StructWithSelf;
+
+impl StructWithSelf {
+    #[allow(dead_code)]
+    #[consumes("self")]
+    pub fn into_allocated_frames(self) -> i32 {
+        10
+    }
+}
+
+#[cfg(test)]
+mod self_tests {
+    use super::StructWithSelf;
+
+    #[test]
+    fn test_self_consumption() {
+        let s = StructWithSelf;
+        assert_eq!(s.into_allocated_frames(), 10);
     }
 }
