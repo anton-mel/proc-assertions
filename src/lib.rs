@@ -1,36 +1,32 @@
-//! [![Banner](https://raw.githubusercontent.com/nvzqz/proc-assertions/static/proc_assertions_banner.png)](https://github.com/nvzqz/static-assertions-rs)
+//! [![Banner](https://raw.githubusercontent.com/anton-mel/proc-assertions/main/static/proc_assertions_banner.png)]
 //!
-//! <div align="center">
-//!     <a href="https://crates.io/crates/proc_static_assertions">
-//!         <img src="https://img.shields.io/crates/d/proc_static_assertions.svg" alt="Downloads">
-//!     </a>
-//!     <a href="https://travis-ci.org/nvzqz/static-assertions-rs">
-//!         <img src="https://travis-ci.org/nvzqz/static-assertions-rs.svg?branch=master" alt="Build Status">
+//! <div align="right">
+//!     <a href="https://crates.io/crates/proc_assertions">
+//!         <img src="https://img.shields.io/crates/d/proc_assertions" alt="Downloads">
 //!     </a>
 //!     <br><br>
 //! </div>
 //!
-//! Procedural macro [compile-time] assertions as an extension of
-//! [`static_assertions`].
+//! # Overview
+//!
+//! The `proc_assertions` crate provides a set of procedural macros for enforcing compile-time assertions in Rust code. These macros help ensure the correctness of your code by validating structural and behavioral properties, such as field visibility, size, alignment, and mutation rules. 
 //!
 //! # Usage
 //!
-//! There's two main ways of using this crate: as a direct dependency or
-//! indirect dependency (via [`static_assertions`]).
+//! You can use this crate as either a direct dependency or an indirect dependency through [`proc_assertions`]. 
 //!
 //! ## Direct Dependency
 //!
-//! This crate is available [on crates.io][crate] and can be used by adding the
-//! following to your project's [`Cargo.toml`]:
+//! Add the following to your project's [`Cargo.toml`]:
 //!
 //! ```toml
 //! [dependencies]
 //! proc_assertions = "0.1.0"
 //! ```
 //!
-//! and this to your crate root (`main.rs` or `lib.rs`):
+//! Then include it in your crate root (`main.rs` or `lib.rs`):
 //!
-//! ```
+//! ```rust
 //! #[macro_use]
 //! extern crate proc_assertions;
 //! # fn main() {}
@@ -38,24 +34,22 @@
 //!
 //! ## Indirect Dependency
 //!
-//! Add the following to your project's [`Cargo.toml`]:
+//! Alternatively, you can add it with features:
 //!
 //! ```toml
 //! [dependencies]
-//! static_assertions = { version = "1.1.0", features = ["proc"] }
+//! proc_assertions = { version = "0.1.0", features = ["proc"] }
 //! ```
 //!
-//! and this to your crate root (`main.rs` or `lib.rs`):
+//! This will also import all macros available in `proc_assertions`.
 //!
-//! 
-//! #[macro_use]
-//! extern crate static_assertions;
+//! # License
 //!
-//! This will also import all macros in `proc_assertions`.
-
-#![doc(html_root_url = "https://docs.rs/proc_assertions/0.0.0")]
+//! This project is licensed under the [MIT License](LICENSE).
+//!
+#![doc(html_root_url = "https://docs.rs/proc_assertions/0.1.0")]
 #![doc(
-    html_logo_url = "https://raw.githubusercontent.com/nvzqz/static-assertions-rs/assets/Icon.png"
+    html_logo_url = "https://raw.githubusercontent.com/anton-mel/proc-assertions/main/static/proc_assertions_logo.png"
 )]
 #![deny(missing_docs)]
 
