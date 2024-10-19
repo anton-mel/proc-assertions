@@ -12,14 +12,14 @@ adding the following to your project's
 
 ```toml
 [dependencies]
-proc_assertions = "1.1.0"
+proc_assertions = "0.1.0"
 ```
 
 and this to your crate root (`main.rs` or `lib.rs`):
 
 ```rust
 #[macro_use]
-extern crate proc_static_assertions;
+extern crate proc_assertions;
 ```
 
 ## Usage
@@ -35,10 +35,12 @@ This crate exposes the following proc-macros:
 
 ## FAQ
 
-- **Q:** When would I want to use this?
 - **Q:** How can I contribute?
+Contributions are welcome via pull requests to the [GitHub repository](https://github.com/anton-mel/proc-assertions).
 - **Q:** Will this affect my compiled binary?
+No, these assertions are only used at compile-time and don't affect the final binary.
 - **Q:** Will this affect my compile times?
+There may be a slight increase in compile times due to additional checks.
 
 ## License
 
