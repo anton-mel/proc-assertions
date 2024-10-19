@@ -67,7 +67,6 @@ fn extract_instance_names(
                 let pat = &*pat_type.pat;
                 let ty = &*pat_type.ty;
                 let ty_str = quote! { #ty }.to_string();
-                println!("Type: {}", ty_str);
 
                 match pat {
                     Pat::Ident(pat_ident) => {
