@@ -1,4 +1,4 @@
-//! [![Banner](https://raw.githubusercontent.com/nvzqz/static-assertions-rs/assets/Banner.png)](https://github.com/nvzqz/static-assertions-rs)
+//! [![Banner](https://raw.githubusercontent.com/nvzqz/proc-assertions/static/proc_assertions_banner.png)](https://github.com/nvzqz/static-assertions-rs)
 //!
 //! <div align="center">
 //!     <a href="https://crates.io/crates/proc_static_assertions">
@@ -25,14 +25,14 @@
 //!
 //! ```toml
 //! [dependencies]
-//! proc_static_assertions = "0.0.0"
+//! proc_assertions = "0.1.0"
 //! ```
 //!
 //! and this to your crate root (`main.rs` or `lib.rs`):
 //!
 //! ```
 //! #[macro_use]
-//! extern crate proc_static_assertions;
+//! extern crate proc_assertions;
 //! # fn main() {}
 //! ```
 //!
@@ -47,33 +47,13 @@
 //!
 //! and this to your crate root (`main.rs` or `lib.rs`):
 //!
-//! ```ignore
+//! 
 //! #[macro_use]
 //! extern crate static_assertions;
-//! ```
 //!
-//! This will also import all macros in `proc_static_assertions`.
-//!
-//! # Donate
-//!
-//! This project is made freely available (as in free beer), but unfortunately
-//! not all beer is free! So, if you would like to buy me a beer (or coffee or
-//! *more*), then consider supporting my work that's benefited your project
-//! and thousands of others.
-//!
-//! <a href="https://www.patreon.com/nvzqz">
-//!     <img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a Patron!" height="35">
-//! </a>
-//! <a href="https://www.paypal.me/nvzqz">
-//!     <img src="https://buymecoffee.intm.org/img/button-paypal-white.png" alt="Buy me a coffee" height="35">
-//! </a>
-//!
-//! [`static_assertions`]: https://github.com/nvzqz/static-assertions-rs
-//! [crate]: https://crates.io/crates/static_assertions
-//! [`Cargo.toml`]: https://doc.rust-lang.org/cargo/reference/manifest.html
-//! [compile-time]: https://en.wikipedia.org/wiki/Compile_time
+//! This will also import all macros in `proc_assertions`.
 
-#![doc(html_root_url = "https://docs.rs/proc_static_assertions/0.0.0")]
+#![doc(html_root_url = "https://docs.rs/proc_assertions/0.0.0")]
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/nvzqz/static-assertions-rs/assets/Icon.png"
 )]

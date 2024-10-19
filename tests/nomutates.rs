@@ -2,7 +2,7 @@
 #![deny(unsafe_code)]
 
 #[macro_use]
-extern crate proc_static_assertions;
+extern crate proc_assertions;
 
 #[derive(Default)]
 pub struct MyStruct {

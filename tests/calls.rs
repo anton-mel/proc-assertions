@@ -2,7 +2,7 @@
 #![deny(unsafe_code)]
 
 #[macro_use]
-extern crate proc_static_assertions;
+extern crate proc_assertions;
 
 pub fn allowed_function() {}
 pub fn disallowed_function() {}

@@ -2,7 +2,7 @@
 #![deny(unsafe_code)]
 
 #[macro_use]
-extern crate proc_static_assertions;
+extern crate proc_assertions;
 
 // See more abiout how rust compiler allignes memory:
 // https://doc.rust-lang.org/reference/type-layout.html.
