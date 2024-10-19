@@ -1,7 +1,7 @@
 # proc-assertions
 
 Verify at compile-time your code via procedural assumptions in Rust; developed by [Efficient Computing Lab](https://www.yecl.org/). 
-Find previous commits for the crate v.1.1.0 [here](https://github.com/Ramla-I/static-assertions/tree/antonmel).
+Find previous commits for the crate v.0.1.1 [here](https://github.com/Ramla-I/static-assertions/tree/antonmel).
 
 ## Installation
 
@@ -12,7 +12,7 @@ adding the following to your project's
 
 ```toml
 [dependencies]
-proc_assertions = "0.1.0"
+proc_assertions = "0.1.1"
 ```
 
 and this to your crate root (`main.rs` or `lib.rs`):

@@ -21,7 +21,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! proc_assertions = "0.1.0"
+//! proc_assertions = "0.1.1"
 //! ```
 //!
 //! Then include it in your crate root (`main.rs` or `lib.rs`):
@@ -38,7 +38,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! proc_assertions = { version = "0.1.0", features = ["proc"] }
+//! proc_assertions = { version = "0.1.1", features = ["proc"] }
 //! ```
 //!
 //! This will also import all macros available in `proc_assertions`.
@@ -47,7 +47,7 @@
 //!
 //! This project is licensed under the [MIT License](LICENSE).
 //!
-#![doc(html_root_url = "https://docs.rs/proc_assertions/0.1.0")]
+#![doc(html_root_url = "https://docs.rs/proc_assertions/0.1.1")]
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/anton-mel/proc-assertions/main/static/proc_assertions_logo.png"
 )]
