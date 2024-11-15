@@ -6,7 +6,7 @@ Find previous commits for the crate v.0.1.1 [here](https://github.com/Ramla-I/st
 ## Installation
 
 This crate is available
-[on crates.io](https://crates.io/crates/proc_assertions) [[documentation](https://docs.rs/proc_assertions/0.1.1/proc_assertions/)] and can be used by
+[on crates.io](https://crates.io/crates/proc_assertions) [read crate [documentation here](https://docs.rs/proc_assertions/0.1.1/proc_assertions/)] and can be used by
 adding the following to your project's
 [`Cargo.toml`](https://doc.rust-lang.org/cargo/reference/manifest.html):
 
