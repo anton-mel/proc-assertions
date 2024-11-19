@@ -35,12 +35,10 @@ This crate exposes the following proc-macros:
 
 ## FAQ
 
-- **Q:** How can I contribute?
-Contributions are welcome via pull requests to the [GitHub repository](https://github.com/anton-mel/proc-assertions).
-- **Q:** Will this affect my compiled binary?
-No, these assertions are only used at compile-time and don't affect the final binary.
-- **Q:** Will this affect my compile times?
-There may be a slight increase in compile times due to additional checks.
+- Contributions are welcome via pull requests to the [GitHub repository](https://github.com/anton-mel/proc-assertions).
+- These assertions are only used at compile-time and don't affect the final binary.
+- There may be a slight increase in compile times due to additional assertions.
+- Install `rust-analyzer` that employs `notify::Watcher` for real-time code monitoring.
 
 ## License
 
