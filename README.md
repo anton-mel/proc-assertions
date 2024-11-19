@@ -12,7 +12,7 @@ Proc-assertions is a proc-macro tool built on Rust compiler. It laverages proced
 ## Installation
 
 This crate is available
-[on crates.io](https://crates.io/crates/proc_assertions) (read crate [documentation](https://docs.rs/proc_assertions/0.1.1/proc_assertions/)) and can be used by
+[on crates.io](https://crates.io/crates/proc_assertions) and can be used by
 adding the following to your project's
 [`Cargo.toml`](https://doc.rust-lang.org/cargo/reference/manifest.html):
 
@@ -38,6 +38,8 @@ This crate exposes the following proc-macros:
 - #[`private_fields`]
 - #[`size_align`]
 - #[`consumes`]
+
+For further details, please refer to the [documentation](https://docs.rs/proc_assertions/0.1.1/proc_assertions/).
 
 ## FAQ
 
