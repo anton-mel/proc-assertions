@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/crates/d/proc_assertions?label=installs&logo=rust" alt="crates.io installs">
 </p>
 
-Proc-assertions is a proc-macro tool build on a Rust compiler ASTs. It helps to verify and assert at compile-time your code via procedural assumptions in Rust. Developed by [Efficient Computing Lab](https://www.yecl.org/) for the [TheseusOS](https://github.com/theseus-os/Theseus) verification purposes. Find previous commits [here](https://github.com/Ramla-I/static-assertions/tree/antonmel). 
+Proc-assertions is a proc-macro tool built on Rust compiler. It laverages procedural assumptions to parse in compile-time object ASTs and injects assertion fragments based on the request. Developed by [Efficient Computing Lab](https://www.yecl.org/) for the [TheseusOS](https://github.com/theseus-os/Theseus) verification purposes. Find previous commits [here](https://github.com/Ramla-I/static-assertions/tree/antonmel). 
 
 ## Installation
 
