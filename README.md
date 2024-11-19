@@ -1,7 +1,13 @@
 ![proc-assertions banner](./static/proc_assertions_banner.png)
 
-Verify at compile-time your code via procedural assumptions in Rust; developed by [Efficient Computing Lab](https://www.yecl.org/). 
-Find previous commits for the crate v.0.1.1 [here](https://github.com/Ramla-I/static-assertions/tree/antonmel).
+<p align="right">
+  <img src="https://img.shields.io/crates/v/proc_assertions" alt="latest version">
+  <img src="https://img.shields.io/crates/l/proc_assertions" alt="license">
+  <img src="https://docs.rs/proc_assertions/badge.svg" alt="docs.rs">
+  <img src="https://img.shields.io/crates/d/proc_assertions?label=installs&logo=rust" alt="crates.io installs">
+</p>
+
+Proc-assertions is a proc-macro tool build on a Rust compiler ASTs. It helps to verify and assert at compile-time your code via procedural assumptions in Rust. Developed by [Efficient Computing Lab](https://www.yecl.org/) for the [TheseusOS](https://github.com/theseus-os/Theseus) verification purposes. Find previous commits [here](https://github.com/Ramla-I/static-assertions/tree/antonmel). 
 
 ## Installation
 
